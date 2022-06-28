@@ -46,16 +46,34 @@ public class LetterCombinations {
         if (index == digits.length()) {
             result.add(stringBuffer.toString());
         } else {
-            char digit = digits.charAt(index);
-            String letters = map.get(digit);
-            int length = letters.length();
-            for (int i = 0; i < length; i++) {
-                stringBuffer.append(letters.charAt(i));
+            String str = map.get(digits.charAt(index));
+            if (str == null || str.length() == 0) {
+                return;
+            }
+            char[] chars = str.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                stringBuffer.append(chars[i]);
                 backtrack(result, map, digits, index + 1, stringBuffer);
                 stringBuffer.deleteCharAt(index);
             }
         }
     }
+
+
+//    private void backtrack(List<String> result, Map<Character, String> map, String digits, int index, StringBuffer stringBuffer) {
+//        if (index == digits.length()) {
+//            result.add(stringBuffer.toString());
+//        } else {
+//            char digit = digits.charAt(index);
+//            String letters = map.get(digit);
+//            int length = letters.length();
+//            for (int i = 0; i < length; i++) {
+//                stringBuffer.append(letters.charAt(i));
+//                backtrack(result, map, digits, index + 1, stringBuffer);
+//                stringBuffer.deleteCharAt(index);
+//            }
+//        }
+//    }
 
     public static void main(String[] args) {
         LetterCombinations letterCombinations = new LetterCombinations();

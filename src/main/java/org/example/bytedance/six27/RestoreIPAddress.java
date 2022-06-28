@@ -1,11 +1,11 @@
 /**
  * @Author yijun.dyj
  * @Description
- * @Date:Created in 10:52 下午 2022/6/24
+ * @Date:Created in 2:45 下午 2022/6/27
  **/
 
 
-package org.example.bytedance.week1;
+package org.example.bytedance.six27;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,63 +35,57 @@ import java.util.List;
  * 链接：https://leetcode.cn/problems/restore-ip-addresses
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
-public class RestoreIpAddress {
-
-    public static void main(String[] args) {
-        String s = "25525511135";
-        RestoreIpAddress restoreIpAddress = new RestoreIpAddress();
-        List<String> strings = restoreIpAddress.restoreIpAddresses(s);
-        for (String str : strings) {
-            System.out.println(str);
-        }
-    }
-
+public class RestoreIPAddress {
 
     public List<String> restoreIpAddresses(String s) {
         List<String> result = new ArrayList<>();
         if (s == null || s.length() == 0) {
             return result;
         }
-
-        List<Integer> temp = new ArrayList<>();
-        int start = 0;
-        int remain = s.length();
-        dfs(start, remain, s, result, temp);
+        List<String> path = new ArrayList<>();
+        dfs(result, path, s, s.length(), 0);
         return result;
     }
 
-    private void dfs(int start, int remain, String s, List<String> result, List<Integer> temp) {
-        if (remain < (4 - temp.size()) || remain > (4 - temp.size()) * 3) {
-            return;
-        }
-        if (temp.size() == 4 && remain == 0) {
+    private void dfs(List<String> result, List<String> path, String s, int remainlength, int index) {
+        if (path.size() == 4 && remainlength == 0) {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < temp.size(); i++) {
-                sb.append(temp.get(i));
-                if (i != temp.size() - 1) {
+            for (int i = 0; i < path.size(); i++) {
+                sb.append(path.get(i));
+                if (i != 3) {
                     sb.append(".");
                 }
             }
             result.add(sb.toString());
         }
+
+        if (remainlength < 4 - path.size() || remainlength > (4 - path.size()) * 3) {
+            return;
+        }
+
         for (int i = 0; i < 3; i++) {
-            if (start + i + 1 > s.length()) {
+            if (index + i + 1 > s.length()) {
                 break;
             }
-            Integer value = Integer.valueOf(s.substring(start, start + i + 1));
-            if (value == 0 && i == 0) {
-                temp.add(value);
-                dfs(start + i + 1, remain - i - 1, s, result, temp);
-                temp.remove(temp.size() - 1);
+            String c = s.substring(index, index + i + 1);
+            Integer num = Integer.valueOf(c);
+            if ((num >= 1 && num <= 255) || num == 0 && i == 0) {
+                path.add(c);
+                dfs(result, path, s, remainlength - i - 1, index + i + 1);
+                path.remove(path.size() - 1);
             }
-            if (value <= 255 && value >= 1) {
-                temp.add(value);
-                dfs(start + i + 1, remain - i - 1, s, result, temp);
-                temp.remove(temp.size() - 1);
+            if (num == 0 && i == 0) {
+                continue;
             }
-            if (value == 0 && i == 0) {
-                break;
-            }
+        }
+    }
+
+    public static void main(String[] args) {
+        RestoreIPAddress restoreIPAddress = new RestoreIPAddress();
+        String str = "25525511135";
+        List<String> strings = restoreIPAddress.restoreIpAddresses(str);
+        for (String str1 : strings) {
+            System.out.println(str1);
         }
     }
 }
