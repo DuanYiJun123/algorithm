@@ -8,15 +8,26 @@
 package org.example;
 
 public class Test {
-    public static void main(String[] args) {
-//        int a = 123;
-//        int i1 = a / 10;
-//        int i = a % 10;
-//        System.out.println(i1);
-//        System.out.println(i);
-        int start = 100;
-        int end = 101 ;
-        int mid = (start + end) / 2;
-        System.out.println(mid);
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread1 = new Thread(() -> {
+            System.out.println("1");
+        });
+        Thread thread2 = new Thread(() -> {
+            System.out.println("2");
+        });
+        Thread thread3 = new Thread(() -> {
+            System.out.println("3");
+        });
+        thread1.start();
+        thread2.start();
+        thread3.start();
+        while (true) {
+
+            thread1.join();
+            thread2.join();
+            thread3.join();
+            thread1.notifyAll();
+        }
     }
 }
