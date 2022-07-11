@@ -21,6 +21,34 @@ public class MergeSort {
         }
     }
 
+    //非递归方法实现
+    public void mergeSort2(int[] array) {
+        if (array == null || array.length < 2) {
+            return;
+        }
+        int N = array.length;
+        //步长
+        int mergeSize = 1;
+        while (mergeSize < N) {
+            //当前左组的第一个位置
+            int L = 0;
+            while (L < N) {
+                int M = L + mergeSize - 1;
+                if (M >= N) {
+                    break;
+                }
+                int R = Math.min(M + mergeSize, N - 1);
+                merge(array, L, R, M);
+                L = R + 1;
+            }
+            if (mergeSize > N / 2) {
+                break;
+            }
+            //步长乘2
+            mergeSize <<= 1;
+        }
+    }
+
 
     public void mergeSort(int[] array) {
         if (array == null && array.length == 0) {
